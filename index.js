@@ -6,7 +6,7 @@ const cors = require("cors");
 
 require("dotenv").config({ path: "./secure/.env" });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3101;
 
 connectToDb();
 
