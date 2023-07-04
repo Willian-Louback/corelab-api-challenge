@@ -5,15 +5,19 @@ const taskSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    check: {
-        type: Boolean,
-        required: true,
-        default: false
+    taskContent: {
+        type: String,
+        required: true
     },
     favorite: {
         type: Boolean,
         required: true,
         default: false
+    },
+    color: {
+        type: String,
+        required: true,
+        default: "#FFF"
     },
     date: {
         type: Date,

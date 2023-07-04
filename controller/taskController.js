@@ -1,21 +1,15 @@
 const Task = require("../models/taskSchema");
 
-const generateTaskObject = (taskName, check, favorite) => {
-    return {
-        "task": taskName,
-        "check": check,
-        "favorite": favorite
-    };
-};
-
 const init = (_req, res) => {
     return res.status(200).send("<h1>Testando</h1>");
 };
 
 const getAllTasks = async (_req, res) => {
     try {
-        const allTasks = await Task.find();
-        return res.status(200).json({ allTasks: allTasks });
+        const favoriteTasks = await Task.find({ favorite: true });
+        const othersTasks = await Task.find({ favorite: false });
+
+        return res.status(200).json({ favoriteTasks: favoriteTasks.reverse(), othersTasks: othersTasks.reverse() });
     } catch(err) {
         return res.status(500).json({ error: err.message });
     }
@@ -23,13 +17,20 @@ const getAllTasks = async (_req, res) => {
 
 const createTask = async (req, res) => {
     try{
-        const { taskName, check, favorite } = req.body;
-        const task = generateTaskObject(taskName, check, favorite);
+        const { taskName, taskContent, color = "#FFF", favorite } = req.body;
+        const task = {
+            "task": taskName,
+            "taskContent": taskContent,
+            "color": color,
+            "favorite": favorite
+        };
 
-        await Task.create(task);
+        const { _id } = await Task.create(task);
+
+        task._id = _id;
 
         return res.status(200).json({
-            "message": "created",
+            message: "created",
             task
         });
     } catch(err) {
@@ -39,12 +40,15 @@ const createTask = async (req, res) => {
 };
 
 const updateTask = async (req, res) => {
-    const { taskName, check, favorite, id } = req.body;
-    const task = generateTaskObject(taskName, check, favorite);
+    const { taskName, taskContent, id } = req.body;
+    const task = {
+        task: taskName,
+        taskContent: taskContent
+    };
 
     try{
         await Task.updateOne({  _id: id }, task);
-        return res.status(200).json({ message: "updated", task: task });
+        return res.status(200).json({ message: "updated", updated: task });
     } catch(err) {
         return res.status(500).json({ error: err.message });
     }
@@ -63,25 +67,21 @@ const deleteTask = async (req, res) => {
 
 const changeTaskStatus = async (req, res) => {
     try {
-        const { id, status } = req.body;
-        const task = await Task.findOne({ _id: id });
+        const { id, color } = req.body;
+        const isFavorite = await Task.findOne({ _id: id }, { favorite: 1 });
+        const taskChange = {};
 
-        switch(status) {
-        case "check":
-            task.check ? task.check = false : task.check = true;
-            break;
-        case "favorite":
-            task.favorite ? task.favorite = false : task.favorite = true;
-            break;
+        if(color){
+            taskChange.color = color;
+        } else {
+            isFavorite.favorite ? taskChange.favorite = false : taskChange.favorite = true;
         }
 
-        await Task.updateOne({  _id: id }, task);
+        await Task.updateOne({  _id: id }, taskChange);
 
         return res.status(200).json({
             message: "updated",
-            task: {
-                task
-            }
+            updated: taskChange
         });
     } catch(err) {
         return res.status(500).json({ error: err.message });
