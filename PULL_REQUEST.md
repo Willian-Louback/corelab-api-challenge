@@ -12,7 +12,13 @@ O Frontend foi feito com ReactJs, obedecendo a estrutura básica do React, e man
 
 ### O layout
 O Layout do projeto foi feito da forma mais fiel possível ao mockup, mas adaptei algumas partes do layout para uma melhor experiência do usuário. O layout ficou agradavél e responsivo para todos os dispositivos.
+Explicação da interface:
 
+ • Logo acima na nav, podemos filtrar as tarefas pelo título e pelas cores, tudo atualiza automaticamente, então o botão de pesquisa acabou ficando obsoleto, mas eu o deixei na interface para manter a fidelidade ao mockup original.
+
+ • Abaixo da nav, temos um card para adicionar a task, onde o usuário pode escrever a sua nota, adicionar o título e marcar como favorito, após isso é só dar um Enter que a tarefa será criada.
+
+ • Por fim, temos o container das notas, onde são exibidas e filtradas de acordo com a ordem da postagem e o grau de importância ( As favoritas aparecem primeiro ). Na parte superior do card de visualização das notas o usuário pode definir a nota como favorita ou remove-la dos favoritos, na parte inferior, temos as opções de edição, onde o usuário pode escolher editar o conteúdo, mudar a cor ou excluir a nota.
 
 ### O projeto conta com as seguintes funcionalidades:
 
