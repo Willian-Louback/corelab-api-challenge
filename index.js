@@ -8,11 +8,9 @@ require("dotenv").config({ path: "./secure/.env" });
 
 const port = process.env.PORT || 3101;
 
-connectToDb();
+app.use(cors());
 
-app.use(cors(/*{
-    origin: process.env.BASE_URL
-}*/));
+connectToDb();
 
 app.use(express.json());
 app.use(routes);
