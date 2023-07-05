@@ -1,7 +1,7 @@
 const Task = require("../models/taskSchema");
 
 const init = (_req, res) => {
-    return res.status(200).send("<h1>Testando</h1>");
+    return res.status(200).send("<h1>Api funcionando</h1>");
 };
 
 const getAllTasks = async (_req, res) => {
